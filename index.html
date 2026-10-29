@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0a2947">
-<meta name="description" content="Quiz de Ética Contábil — 100 questões com correção, sons e progresso salvo automaticamente. Curso de Contabilidade Professor Moreira.">
+<meta name="description" content="Quiz de Ética Contábil — 100 questões com correção, sons e relatórios acumulados pelo WhatsApp a cada 10 questões. Curso de Contabilidade Professor Moreira.">
 <title>Ética Contábil | Quiz com 100 questões — Professor Moreira</title>
 <style>
 :root{--navy:#0a2947;--navy2:#173e61;--blue:#12629a;--paper:#ffffff;--background:#f1f5fa;--text:#182c42;--muted:#526579;--green:#16844d;--green-bg:#e5f6ec;--red:#bf2e3c;--red-bg:#fff0f1;--border:#cdd9e6;--amber:#ffca58;}
@@ -74,6 +74,25 @@ button:disabled{cursor:not-allowed;opacity:.45}
 .result-actions{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-top:25px}
 .result-actions button{flex:1 1 170px;max-width:290px}
 .source-note{margin:23px auto 0;text-align:center;color:var(--muted);font-size:.9rem;max-width:760px}
+/* Nome do aluno e relatórios acumulados */
+.student-entry{margin:0 auto 24px;max-width:475px;text-align:left}
+.student-entry label{display:block;font-weight:900;color:var(--navy);font-size:1.22rem;margin-bottom:8px}
+.student-entry input{width:100%;min-height:65px;padding:12px 16px;font:inherit;font-size:1.25rem;border:2px solid #adc3d6;border-radius:12px;background:#fff;color:var(--text)}
+.student-entry input:focus{outline:3px solid #f3c763;outline-offset:2px;border-color:var(--blue)}
+.field-error{font-size:1rem;color:#b82337;font-weight:750;min-height:1.5em;margin:7px 0 0}
+.checkpoint{max-width:780px;margin:18px auto 0;padding:clamp(22px,6vw,46px);text-align:center}
+.checkpoint h2{font-size:clamp(2.0rem,6vw,3rem);line-height:1.13;color:var(--navy);margin:12px 0 10px}
+.checkpoint-subtitle{font-size:clamp(1.12rem,3.2vw,1.38rem);color:var(--muted);margin:0 0 20px}
+.student-line{font-size:clamp(1.2rem,3vw,1.45rem);font-weight:850;color:var(--navy2);overflow-wrap:anywhere}
+.checkpoint .metrics{grid-template-columns:repeat(3,1fr)}
+.checkpoint .metric:nth-child(1) strong{color:var(--green)}
+.checkpoint .metric:nth-child(2) strong{color:var(--red)}
+.wa-btn{background:#167d48;box-shadow:0 5px 0 #0c5931;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;margin:23px auto 17px}
+.wa-note{font-size:1.04rem;line-height:1.5;color:var(--muted);margin:10px auto 24px;max-width:560px}
+.milestone-feedback{text-align:left;background:#f2f7fb;border:1px solid var(--border);border-radius:14px;padding:17px 18px;font-size:clamp(1rem,2.6vw,1.2rem);margin-top:22px}
+.milestone-feedback strong{display:block;margin-bottom:5px;color:var(--navy)}
+.continue-btn{max-width:475px;display:block;margin:0 auto}
+.whatsapp-result{background:#147d49;border-color:#147d49;color:white;text-decoration:none;display:inline-flex;justify-content:center;align-items:center}
 @media(max-width:540px){.shell{padding:14px 12px 28px}.topbar-inner{padding:12px}.question-panel{padding:18px 15px 21px}.answer{gap:12px;padding:15px 12px}.answer .letter{width:37px;height:37px}.controls{grid-template-columns:1fr 1fr}.controls .reset{grid-column:1/-1;grid-row:2}.controls .nav{min-height:60px}.keyboard{display:none}.metrics{gap:6px}.metric{padding:12px 6px}.metric span{font-size:.9rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
@@ -86,8 +105,9 @@ button:disabled{cursor:not-allowed;opacity:.45}
   <h1>Ética<br>Contábil</h1>
   <p class="intro">REVISÃO • 100 QUESTÕES<br>Treine, confira os comentários e acompanhe seu desempenho.</p>
   <div class="chips"><span class="chip">100 questões</span><span class="chip">A, B, C e D</span><span class="chip">Correção imediata</span></div>
+  <div class="student-entry"><label for="studentName">NOME DO ALUNO</label><input id="studentName" type="text" maxlength="80" autocomplete="name" placeholder="Digite seu nome" required><p id="nameError" class="field-error" role="alert"></p></div>
   <button id="startBtn" type="button" class="big-btn">▶ COMEÇAR QUIZ</button>
-  <p class="hero-note">Acesso livre, sem senha e sem cadastro. Seu progresso é salvo automaticamente neste aparelho.</p>
+  <p class="hero-note">Sem senha e sem cadastro. Seu nome aparece nos relatórios de cada 10 questões. O progresso fica salvo neste aparelho.</p>
 </section>
 <section id="quiz" class="quiz" hidden aria-label="Quiz de Ética Contábil">
   <div class="quiz-heading"><div class="quiz-label" id="counter">QUESTÃO 01 DE 100</div><div class="stats"><span class="stat" id="answeredStat">Respondidas: 0/100</span><span class="stat" id="correctStat">Acertos: 0</span></div></div>
@@ -97,7 +117,18 @@ button:disabled{cursor:not-allowed;opacity:.45}
   <nav class="controls" aria-label="Navegação do quiz"><button id="prevBtn" class="nav" type="button">← VOLTAR</button><button id="nextBtn" class="nav primary" type="button">AVANÇAR →</button><button id="restartBtn" class="nav reset" type="button">↻ REINICIAR</button></nav>
   <p class="keyboard">Dica: use as setas ← e → do teclado para navegar.</p>
 </section>
-<section id="results" class="panel results" hidden><div class="small-kicker">CURSO DE CONTABILIDADE PROFESSOR MOREIRA</div><h2>Resultado da Revisão<br>Ética Contábil</h2><p class="intro">Seu desempenho nas 100 questões</p><div id="score" class="score"></div><div class="metrics"><div class="metric"><strong id="resRight"></strong><span>Acertos</span></div><div class="metric"><strong id="resWrong"></strong><span>Erros</span></div><div class="metric"><strong id="resPending"></strong><span>Sem resposta</span></div></div><p id="resText" class="intro"></p><div class="result-actions"><button id="reviewBtn" class="nav primary" type="button">← REVER QUESTÕES</button><button id="resetResultsBtn" class="nav reset" type="button">↻ REINICIAR QUIZ</button></div></section>
+<section id="checkpoint" class="panel checkpoint" hidden aria-label="Relatório parcial do aluno">
+  <div class="small-kicker">CURSO DE CONTABILIDADE PROFESSOR MOREIRA</div>
+  <h2 id="checkpointTitle">RELATÓRIO PARCIAL</h2>
+  <p id="checkpointSubtitle" class="checkpoint-subtitle">Resultado acumulado</p>
+  <p class="student-line" id="checkpointStudent"></p>
+  <div class="metrics"><div class="metric"><strong id="checkpointRight">0</strong><span>Acertos</span></div><div class="metric"><strong id="checkpointWrong">0</strong><span>Erros</span></div><div class="metric"><strong id="checkpointRate">0%</strong><span>Aproveitamento</span></div></div>
+  <a id="sendWhatsapp" class="big-btn wa-btn" href="https://wa.me/5561985323574" target="_blank" rel="noopener noreferrer">📲 ENVIAR AO PROFESSOR PELO WHATSAPP</a>
+  <p class="wa-note">O WhatsApp abrirá com seu nome e seu resultado acumulado. <strong>Toque em Enviar no WhatsApp</strong> para que o Professor Moreira receba a mensagem.</p>
+  <button id="checkpointContinue" type="button" class="nav primary continue-btn">JÁ ENVIEI • CONTINUAR →</button>
+  <div class="milestone-feedback"><strong id="checkpointFeedbackTitle">Revisão da última questão</strong><div id="checkpointFeedbackText"></div></div>
+</section>
+<section id="results" class="panel results" hidden><div class="small-kicker">CURSO DE CONTABILIDADE PROFESSOR MOREIRA</div><h2>Resultado da Revisão<br>Ética Contábil</h2><p class="intro">Seu desempenho nas 100 questões</p><div id="score" class="score"></div><div class="metrics"><div class="metric"><strong id="resRight"></strong><span>Acertos</span></div><div class="metric"><strong id="resWrong"></strong><span>Erros</span></div><div class="metric"><strong id="resPending"></strong><span>Sem resposta</span></div></div><p id="resText" class="intro"></p><div class="result-actions"><a id="finalShare" class="nav whatsapp-result" href="https://wa.me/5561985323574" target="_blank" rel="noopener noreferrer">📲 ENVIAR RESULTADO</a><button id="reviewBtn" class="nav primary" type="button">← REVER QUESTÕES</button><button id="resetResultsBtn" class="nav reset" type="button">↻ REINICIAR QUIZ</button></div></section>
 <p class="source-note">Questões e comentários extraídos do material “REVISÃO DE ÉTICA CONTÁBIL”. As alternativas foram redistribuídas, preservando as respostas corretas e os comentários do material.</p>
 </main>
 <script>
@@ -106,14 +137,17 @@ const QUESTIONS=[{"n":1,"q":"Um contador foi convidado para realizar um trabalho
 const KEYS=['A','B','C','D'];
 const STORAGE_KEY='quiz_professor_moreira_etica_contabil_100_v1';
 const $=id=>document.getElementById(id);
-const empty=()=>({started:false,finished:false,pos:0,choices:Array(QUESTIONS.length).fill(null)});
+const empty=()=>({started:false,finished:false,name:'',pos:0,choices:Array(QUESTIONS.length).fill(null),checkpoint:null,seenCheckpoints:[]});
 function restore(){
  try{
   const raw=JSON.parse(localStorage.getItem(STORAGE_KEY));
   if(!raw||!Array.isArray(raw.choices)||raw.choices.length!==QUESTIONS.length) return empty();
   return {started:!!raw.started,finished:!!raw.finished,
+   name:typeof raw.name==='string'?raw.name.slice(0,80):'',
    pos:Number.isInteger(raw.pos)?Math.max(0,Math.min(QUESTIONS.length-1,raw.pos)):0,
-   choices:raw.choices.map(c=>Number.isInteger(c)&&c>=0&&c<4?c:null)};
+   choices:raw.choices.map(c=>Number.isInteger(c)&&c>=0&&c<4?c:null),
+   checkpoint:Number.isInteger(raw.checkpoint)&&raw.checkpoint>=10&&raw.checkpoint<=100&&raw.checkpoint%10===0?raw.checkpoint:null,
+   seenCheckpoints:Array.isArray(raw.seenCheckpoints)?raw.seenCheckpoints.filter(n=>Number.isInteger(n)&&n>=10&&n<=100&&n%10===0):[]};
  }catch(e){return empty();}
 }
 let state=restore();
@@ -137,17 +171,73 @@ function sound(isCorrect){
   });
  }catch(e){/* som opcional se o aparelho bloquear áudio */}
 }
-function stats(){
+function stats(upto=QUESTIONS.length){
  let correct=0,answered=0;
- state.choices.forEach((choice,i)=>{if(choice!==null){answered++;if(choice===QUESTIONS[i].correct)correct++;}});
- return {correct,answered,wrong:answered-correct,pending:QUESTIONS.length-answered};
+ state.choices.slice(0,upto).forEach((choice,i)=>{if(choice!==null){answered++;if(choice===QUESTIONS[i].correct)correct++;}});
+ return {correct,answered,wrong:answered-correct,pending:upto-answered};
 }
-function section(which){['cover','quiz','results'].forEach(id=>$(id).hidden=id!==which);}
+function section(which){['cover','quiz','checkpoint','results'].forEach(id=>$(id).hidden=id!==which);}
 function scrollTopSafe(){window.scrollTo({top:0,behavior:'instant'});}
-function start(){state.started=true;state.finished=false;save();renderQuestion();}
+function start(){
+ const name=$('studentName').value.trim().replace(/\s+/g,' ');
+ if(!name){$('nameError').textContent='Informe seu nome para identificar seus resultados.';$('studentName').focus();return;}
+ $('nameError').textContent='';state.name=name;state.started=true;state.finished=false;save();
+ if(state.checkpoint)renderCheckpoint();else renderQuestion();
+}
+function whatsAppUrl(upto){
+ const s=stats(upto),p=s.answered?Math.round(s.correct/s.answered*100):0;
+ const msg=[
+  '📘 CURSO DE CONTABILIDADE PROFESSOR MOREIRA',
+  'ÉTICA CONTÁBIL — RESULTADO ACUMULADO',
+  '',
+  `👤 Aluno(a): ${state.name}`,
+  `📝 Questões: 1 a ${upto} (de 100)`,
+  `✅ Acertos acumulados: ${s.correct}`,
+  `❌ Erros acumulados: ${s.wrong}`,
+  `📊 Aproveitamento: ${p}%`,
+  '',
+  'Relatório enviado pelo Quiz de Ética Contábil.'
+ ].join('\n');
+ return `https://wa.me/5561985323574?text=${encodeURIComponent(msg)}`;
+}
+function milestoneReady(){
+ for(let n=10;n<=100;n+=10){
+  if(!state.seenCheckpoints.includes(n)&&stats(n).answered===n)return n;
+ }
+ return null;
+}
 function choose(index){
  const n=state.pos;if(state.choices[n]!==null)return;
- state.choices[n]=index;save();sound(index===QUESTIONS[n].correct);renderQuestion(false);
+ state.choices[n]=index;
+ sound(index===QUESTIONS[n].correct);
+ const milestone=milestoneReady();
+ if(milestone!==null){
+  state.checkpoint=milestone;state.seenCheckpoints.push(milestone);save();renderCheckpoint();
+ }else{save();renderQuestion(false);}
+}
+function renderCheckpoint(){
+ const n=state.checkpoint;
+ if(!n){renderQuestion();return;}
+ const s=stats(n),p=Math.round(s.correct/n*100),last=QUESTIONS[n-1],answer=state.choices[n-1];
+ section('checkpoint');
+ $('checkpointTitle').textContent=n===100?'VOCÊ CONCLUIU AS 100 QUESTÕES!':`PARABÉNS! ${n} QUESTÕES RESPONDIDAS`;
+ $('checkpointSubtitle').textContent=`Relatório acumulado das questões 1 a ${n}`;
+ $('checkpointStudent').textContent=`Aluno(a): ${state.name}`;
+ $('checkpointRight').textContent=s.correct;
+ $('checkpointWrong').textContent=s.wrong;
+ $('checkpointRate').textContent=`${p}%`;
+ $('sendWhatsapp').href=whatsAppUrl(n);
+ $('checkpointContinue').textContent=n===100?'JÁ ENVIEI • VER RESULTADO FINAL →':`JÁ ENVIEI • IR PARA A QUESTÃO ${n+1} →`;
+ $('checkpointFeedbackTitle').textContent=`Questão ${n}: ${answer===last.correct?'✓ Resposta correta':'✕ Resposta incorreta'}`;
+ $('checkpointFeedbackText').textContent=`Gabarito: ${KEYS[last.correct]} — ${last.o[last.correct]}. ${last.explain}`;
+ save();scrollTopSafe();
+}
+function continueFromCheckpoint(){
+ const n=state.checkpoint;
+ if(!n)return;
+ state.checkpoint=null;
+ if(n===100){save();showResults();return;}
+ state.pos=n;save();renderQuestion();
 }
 function renderQuestion(scroll=true){
  state.started=true;state.finished=false;section('quiz');
@@ -191,16 +281,28 @@ function showResults(){
  $('resRight').textContent=s.correct;
  $('resWrong').textContent=s.wrong;
  $('resPending').textContent=s.pending;
+ $('finalShare').href=whatsAppUrl(100);
  $('resText').textContent=s.pending?`Você respondeu ${s.answered} das 100 questões. Volte para responder as ${s.pending} restantes.`:`Parabéns por concluir a revisão das 100 questões! Revise os comentários para fortalecer sua preparação.`;
  scrollTopSafe();
 }
-function goNext(){if(state.pos===QUESTIONS.length-1){showResults();return;}state.pos++;save();renderQuestion();}
+function goNext(){
+ // Uma etapa só é concluída após responder a todas as questões anteriores.
+ if(state.choices[state.pos]===null){alert('Responda esta questão antes de avançar.');return;}
+ const checkpoint=milestoneReady();
+ if(checkpoint!==null){state.checkpoint=checkpoint;state.seenCheckpoints.push(checkpoint);save();renderCheckpoint();return;}
+ if(state.pos===QUESTIONS.length-1){showResults();return;}
+ state.pos++;save();renderQuestion();
+}
 function goPrevious(){if(state.pos>0){state.pos--;save();renderQuestion();}}
 function reset(){
  if(!confirm('Deseja realmente reiniciar? Todas as respostas e o progresso atual serão apagados.'))return;
- state=empty();save();$('startBtn').textContent='▶ COMEÇAR QUIZ';section('cover');scrollTopSafe();
+ const oldName=state.name;
+ state=empty();state.name=oldName;save();$('studentName').value=oldName;
+ $('startBtn').textContent='▶ COMEÇAR QUIZ';section('cover');scrollTopSafe();
 }
 $('startBtn').addEventListener('click',start);
+$('studentName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();start();}});
+$('checkpointContinue').addEventListener('click',continueFromCheckpoint);
 $('prevBtn').addEventListener('click',goPrevious);
 $('nextBtn').addEventListener('click',goNext);
 $('restartBtn').addEventListener('click',reset);
@@ -211,7 +313,10 @@ document.addEventListener('keydown',e=>{
  if(e.key==='ArrowRight'){e.preventDefault();goNext();}
  else if(e.key==='ArrowLeft'){e.preventDefault();goPrevious();}
 });
-if(state.finished){showResults();}
+$('studentName').value=state.name;
+if(state.started&&!state.name){$('startBtn').textContent='▶ CONTINUAR QUIZ';section('cover');}
+else if(state.checkpoint){renderCheckpoint();}
+else if(state.finished){showResults();}
 else if(state.started){renderQuestion();}
 else{section('cover');}
 </script>
